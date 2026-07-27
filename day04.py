@@ -76,24 +76,30 @@ def delete_task(tasks):
         else:
             print("请输入有效的数字,")
 
-my_tasks = [ ]
 
-while True:
-    show_menu()
+def main():
+    my_tasks = [ ]
 
-    choice = input("请输入操作编号:").strip()
+    while True:
+        show_menu()
 
-    if choice == "1":
-        add_task(my_tasks)
+        choice = input("请输入操作编号:").strip()
 
-    elif choice == "2":
-        delete_task(my_tasks)
+        if choice == "1":
+            add_task(my_tasks)
 
-    elif choice == "3":
-        delete_task(my_tasks)
-    elif choice == "4":
-        print("程序已退出")
-        break
+        elif choice == "2":
+            delete_task(my_tasks)
 
-    else:
-        print("请输入1到4之间的有效编号,,")
+        elif choice == "3":
+            delete_task(my_tasks)
+        elif choice == "4":
+            print("程序已退出")
+            break
+
+        else:
+            print("请输入1到4之间的有效编号,,")
+
+
+main()
+
