@@ -1,0 +1,57 @@
+[
+    {
+        "name": "练习Git",
+        "completed": true,
+        "priority": "中"
+    },
+    {
+        "name": "学习python",
+        "completed": true,
+        "priority": "中"
+    },
+    {
+        "name": "练习git",
+        "completed": true,
+        "priority": "中"
+    },
+    {
+        "name": "完成python项目",
+        "completed": true,
+        "priority": "中"
+    },
+    {
+        "name": "阅读面向对象",
+        "completed": true,
+        "priority": "中"
+    },
+    {
+        "name": "完成python项目",
+        "completed": false,
+        "priority": "中"
+    },
+    {
+        "name": "整理学习笔记",
+        "completed": false,
+        "priority": "中"
+    },
+    {
+        "name": "完成python项目",
+        "completed": false,
+        "priority": "高"
+    },
+    {
+        "name": "整理学习笔记",
+        "completed": false,
+        "priority": "中"
+    },
+    {
+        "name": "打扫桌面",
+        "completed": false,
+        "priority": "低"
+    },
+    {
+        "name": "学习中测试",
+        "completed": false,
+        "priority": "中"
+    }
+]
