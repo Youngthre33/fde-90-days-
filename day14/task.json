@@ -1,0 +1,22 @@
+[
+    {
+        "name": "练习Git",
+        "completed": true
+    },
+    {
+        "name": "学习python",
+        "completed": false
+    },
+    {
+        "name": "练习git",
+        "completed": false
+    },
+    {
+        "name": "完成python项目",
+        "completed": false
+    },
+    {
+        "name": "阅读面向对象",
+        "completed": false
+    }
+]
