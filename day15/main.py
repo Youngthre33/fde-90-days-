@@ -1,0 +1,251 @@
+from task import Task
+from storage import save_tasks,load_tasks
+
+
+def show_menu():
+    print("\n===== 任务管理器 =====")
+    print("1.查看任务")
+    print("2.添加任务")
+    print("3.完成任务")
+    print("4.修改任务")
+    print("5.删除任务")
+    print("6.搜索任务")
+    print("7.查看未完成的任务")
+    print("8.查看已完成的任务")
+    print("9.保存并退出")
+
+
+
+
+
+
+##任务列表函数###
+def show_tasks(tasks):
+    if len(tasks) == 0:
+        print("当前没有任务,")
+        return
+
+
+    print("\n==== 任务列表 ====")
+
+    for index, task in enumerate(tasks,start=1):
+        if task.completed:
+            status = "[ x]"
+
+        else:
+            status = "[  ]"
+
+        print(f"{index}.{status} {task.name}")
+
+
+###搜索函数
+def search_tasks(tasks):
+    if len(tasks) == 0:
+        print("当前没有任务可以搜索,")
+        return
+
+    keyword = input("请输入搜索关键词:").strip()
+
+    if keyword == " ":
+        print("搜索关键词不能为空,")
+        return
+
+
+    matched_tasks =  []
+
+    for task in tasks:
+        if keyword in task.name:
+            matched_tasks.append(task)
+
+
+    if len(matched_tasks) == 0:
+        print(f"没有找到包含'{keyword}'的任务")
+        return
+
+    print(f"共找到{len(matched_tasks)}个任务:")
+
+    show_tasks(matched_tasks)
+
+###筛选函数
+def filter_tasks(tasks,completed_status,status_text):
+    filtered_tasks = []
+
+    for task in tasks :
+        if task.completed ==  completed_status:
+            filtered_tasks.append(task)
+
+    if len(filtered_tasks) == 0:
+        print(f"当前没有{status_text}任务,")
+        return
+
+    print(f"共找到{len(filtered_tasks)}个{status_text}任务:")
+
+    show_tasks(filtered_tasks)
+
+
+
+
+###添加任务函数
+def add_task(tasks):
+    task_name = input("请输入新任务名称:").strip()
+
+    if task_name == "":
+        print("任务名称不能为空,")
+
+        return
+
+    new_task = Task(task_name)
+    tasks.append(new_task)
+
+    save_tasks(tasks)
+
+    print(f"任务'{task_name}'添加任务成功")
+
+
+###选择编号函数
+def select_task(tasks,action_text):
+    if len(tasks) == 0:
+        print(f"当前没有任务可以{action_text},")
+        return None
+
+    show_tasks(tasks)
+
+    number_text = input(
+        f"请输入要{action_text}的任务编号:"
+    ).strip()
+
+    if not number_text.isdigit():
+        print("请输入正确的数字编号,")
+        return None
+
+    task_number = int(number_text)
+
+    if task_number < 1 or task_number >len(tasks):
+        print("任务编号不存在,")
+        return  None
+
+    return tasks[task_number -1]
+
+
+
+
+###完成函数
+def complete_task(tasks):
+   selected_task = select_task(tasks,"完成")
+
+   if selected_task is None:
+    return
+
+   if selected_task.completed:
+        print(f"任务'{selected_task.name}'已经完成了")
+
+        return
+
+   selected_task.complete()
+
+   save_tasks(tasks)
+
+
+   print("f任务'{selected_task.name}'已完成,")
+
+
+
+ 
+### 修改任务函数
+def rename_task(tasks):
+    selected_task = select_task(tasks,"修改")
+
+    if selected_task is None:
+        return
+
+    new_name = input("请输入新的任务名称:").strip()
+
+    if new_name == "":
+        print("任务名称不能为空,")
+        return
+
+    old_name = selected_task.name
+
+    selected_task.rename(new_name)
+
+    save_tasks(tasks)
+
+
+    print(f"任务'{old_name}'已修改为'{new_name}'")
+
+
+
+
+###删除函数
+def delete_task(tasks):
+   selected_task = select_task(tasks,"删除")
+   if selected_task is None:
+    return
+   
+   tasks.remove(selected_task)
+   save_tasks(tasks)
+
+   print(f"任务'{selected_task.name}'已删除")
+
+
+
+
+
+
+####主菜单
+def main():
+    tasks = load_tasks()
+    print(f'程序启动成功,已读取{len(tasks)}个任务')
+
+    while True:
+        show_menu()
+
+        choice = input("请输入操作编号:").strip()
+        
+       
+
+
+
+        if choice == "1":
+            show_tasks(tasks)
+
+        elif choice =="2":
+            add_task(tasks)
+
+        elif choice == "3":
+            complete_task(tasks)
+
+        elif choice == "4":
+            rename_task(tasks)
+
+        elif choice == "5":
+            delete_task(tasks)
+
+
+        elif choice == "6":
+            search_tasks(tasks)
+
+        elif choice == "7":
+            filter_tasks(tasks,False,"未完成")
+
+        elif choice == "8":
+            filter_tasks(tasks,True,"已完成")
+            
+
+        elif choice == "9":
+        
+            save_tasks(tasks) 
+            print("任务已经保存,程序退出,")
+            break
+
+
+        else:
+            print("请输入1-9之间的编号才可以滴")
+
+if __name__ =="__main__":
+    main()
+
+
+
+
+
