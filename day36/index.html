@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <title>我的第一个网页 </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+
+<body>
+
+    <div class="app">
+        
+        <aside class="sidebar">
+            <h2>任务管理器</h2>
+
+            <nav class="nav">
+                <a href="#">首页</a>
+                <a href="#">任务</a>
+                <a href="#">设置</a>
+
+            </nav>
+        
+        </aside>
+
+
+
+        <main class="main">  
+
+            <div class="header">
+                <h1>我的任务</h1>
+            </div> 
+            
+            
+            <form class="task-form">
+                
+                <input 
+                class="task-input"
+                type="text"
+                name="task"
+                placeholder="输入任务名称"
+                required
+                >
+                <button class="button button-primary" type="submit">添加任务</button>
+                
+            </form>
+
+
+
+            <div class="cards">
+
+
+                <div class="card">
+                    <h2> 今日任务</h2>
+
+                    <div class="text">
+                        <p>学习 css </p>
+
+                        <p> 状态: 
+                            <span class ="status status-doing">进行中</span>
+
+                        </p>
+                    </div>
+                    
+                    <div class="actions">
+                        <button class="button  button-primary">完成任务</button>
+                        <button class="button  button-danger">删除任务</button>
+
+                    </div>
+
+                </div>
+
+                
+                
+                <div class="card">
+                    <h2> 明日任务</h2>
+
+                    <div class="text">
+                        <p>学习 javascript </p>
+
+                        <p> 状态: 
+                            <span class ="status status-todo">待开始</span>
+
+                        </p>
+                    </div>
+                    <div class="actions">
+                        <button class="button  button-primary">完成任务</button>
+                        <button class="button  button-danger">删除任务</button>
+                        
+                    </div>
+                            
+                </div>    
+                
+
+
+                <div class="card">
+                    <h2> 项目任务</h2>
+
+                    <div class="text">
+                        <p>完善任务管理器 </p>
+
+                        <p> 状态: 
+                            <span class ="status status-doing">进行中</span>
+
+                        </p>
+                            
+                    </div>
+                    <div class="actions">
+                        <button class="button  button-primary">完成任务</button>
+                        <button class="button  button-danger">删除任务</button>
+                        
+                    </div>
+
+                </div>    
+                
+                
+                <div class="card">
+                    <h2> 复习任务</h2>
+
+                    <div class="text">
+                        <p>复习Flexbox </p>
+
+                        <p> 状态: 
+                            <span class ="status status-done">已完成</span>
+
+                        </p>
+                    </div>     
+                    <div class="actions">
+                        <button class="button  button-primary" 
+                        disabled>完成任务</button>
+                        <button class="button  button-danger">删除任务</button>
+                        
+                    </div>                      
+                </div>
+
+
+            </div>   
+
+
+        </main>
+
+    </div>
+
+
+</body>
+
+</html>
