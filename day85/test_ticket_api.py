@@ -1,9 +1,33 @@
+from copy import deepcopy
+
+import pytest
 from fastapi.testclient import TestClient
 
 from day82.main import app
+from day82.ticket_store import tickets
 
 
 client = TestClient(app)
+
+
+# ==================================================
+# 每个测试开始前准备数据，结束后恢复数据
+# ==================================================
+
+@pytest.fixture(autouse=True)
+def reset_tickets():
+    original_tickets = deepcopy(tickets)
+
+    tickets[:] = [
+        {"id": 101, "title": "API 登录失败", "status": "open"},
+        {"id": 102, "title": "API 修改发票", "status": "in_progress"},
+        {"id": 103, "title": "支付失败", "status": "open"},
+        {"id": 104, "title": "导出报表失败", "status": "done"},
+    ]
+
+    yield
+
+    tickets[:] = original_tickets
 
 
 # ==================================================
@@ -168,4 +192,4 @@ def test_delete_ticket_api():
     assert get_response.json() == {"detail": "工单不存在"}
 
     second_delete_response = client.delete("/tickets/103")
-    assert second_delete_response.status_code == 404   
+    assert second_delete_response.status_code == 404
