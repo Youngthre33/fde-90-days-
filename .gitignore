@@ -7,3 +7,7 @@ __pycache__/
 # Day94 SQLite files are generated locally from schema.sql.
 /day94/*.db
 /day94/*.db-journal
+
+# Day95 query practice data can be recreated from the SQL files.
+/day95/*.db
+/day95/*.db-journal
