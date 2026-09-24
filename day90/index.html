@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>工单系统</title>
+    </head>
+
+    <body>
+        <!-- 工单数量和加载状态 -->
+        <p id="ticket-count">正在加载工单...</p>
+
+        <!-- 工单操作区 -->
+        <button id="reload-button" disabled>
+            重新加载工单
+        </button>
+
+        <input
+            id="ticket-input"
+            placeholder="请输入工单标题"
+        >
+
+        <button id="add-button">
+            添加工单
+        </button>
+
+        <!-- 工单列表 -->
+        <ul id="ticket-list"></ul>
+
+        <!-- JavaScript 入口 -->
+        <script
+            type="module"
+            src="main.js"
+        ></script>
+    </body>
+
+</html>
