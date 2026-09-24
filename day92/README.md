@@ -111,7 +111,7 @@ TICKET_LOG_LEVEL=debug
 
 完整请求、回复及错误示例见 [API_EXAMPLES.md](API_EXAMPLES.md)。Swagger 的操作顺序是：展开条目 → Try it out → 输入参数或 JSON → Execute → 查看 Server response。
 
-已有 Python 自动测试可以在第三个、空闲的终端从仓库根目录运行，Day93 阶段演示时统一执行：
+以下是已有历史版本的 Python 自动测试，可在空闲终端从仓库根目录运行：
 
 ```powershell
 .\.venv\Scripts\python.exe -m pytest day83/test_ticket_service.py day84/test_ticket_mutations.py day85/test_ticket_api.py -v
@@ -119,6 +119,7 @@ TICKET_LOG_LEVEL=debug
 
 目前共有 19 个测试。Day83、84 检查 Day82 业务函数，Day85 用 TestClient 检查 Day82 应用；测试在自己的进程中运行，不连接 8001，也不会修改正在运行的后端内存。
 这些旧测试不覆盖当前 Day90 的启动、日志与 CORS，或 Day91 浏览器交互。当前网页功能还需要实际浏览器操作核对，不能用旧测试通过代替全部验证。
+Day93的本次阶段验收复用Day85的10项接口测试，将app导入改为当前Day90应用；具体准备、命令及网页核对见 [Day93阶段验收](../day93/README.md)。
 
 ## 常见问题：先看哪里
 
@@ -141,4 +142,4 @@ TICKET_LOG_LEVEL=debug
 - 本机版本尚无登录和权限控制，不能直接视作完成生产部署；后续按课程推进数据库、安全和部署。
 - 当前仅拒绝空字符串标题，不会去掉首尾空格；删除成功为204空正文，不应再对其调用 `response.json()`。
 - 编写本说明时已核对实际路径、入口、配置示例、包版本和接口定义，并在已有课堂环境执行 `pip check` 通过。
-- 本轮未进行新电脑或全新虚拟环境的安装验证，也未重新执行19个旧测试；依赖清单生成、学习者按说明核对和提交结果待确认。
+- 未进行新电脑或全新虚拟环境的安装验证，也未重新执行19个旧测试。学习者已生成依赖清单并随Day92提交推送，提交为ac57040；后续实际启动和网页整体验收按Day93进行。
