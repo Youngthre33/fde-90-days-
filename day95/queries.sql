@@ -16,5 +16,4 @@ SELECT id, title, status
 FROM tickets
 WHERE status = 'open'
 ORDER BY id DESC
-
 LIMIT 2;

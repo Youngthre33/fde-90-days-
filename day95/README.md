@@ -134,5 +134,5 @@ SELECT id,title,status决定每行返回哪些字段；WHERE决定候选记录�
 - 学习者亲手写queries.sql并在交互入口运行；教师没有代写该查询文件，也没有操作网页后端工单或Day94数据库。
 - 学习者已亲手保存queries.sql，四条主体查询已按实际文件核对，语法与练习一致；尚未收到逐项运行输出，不将教师预检冒充学习者运行结果。
 - 两道小测已作答：第一题知道应改WHERE，但将done的降序结果写为104、106，正确顺序应为106、104；第二题知道去掉ORDER BY不能保证最大两条，但误认为未排序就一定按编号升序。当前校准为“写ORDER BY id或ASC才明确升序，写DESC为降序，省略ORDER BY不保证顺序”。不额外追加题目，后续练习继续对照。
-- Git提交尚待学习者完成。
+- 已核对Git记录：f5997f8（Day 95: query and filter tickets with SQL），main与本地origin/main均指向该提交；之后queries.sql仅移除了LIMIT前的空行，语义不变。
 - 本节提交包含.gitignore、seed.sql、queries.sql和README；不提交本地生成的数据库文件。
