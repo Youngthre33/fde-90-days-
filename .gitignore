@@ -3,3 +3,7 @@ __pycache__/
 *.pyc
 /test.js
 .env
+
+# Day94 SQLite files are generated locally from schema.sql.
+/day94/*.db
+/day94/*.db-journal
