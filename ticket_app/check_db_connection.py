@@ -14,6 +14,7 @@ connection = psycopg.connect(
 
 try:
     print("连接成功，数据库：", connection.info.dbname)
+    print("当前数据库账号：", connection.info.user)
 finally:
     connection.close()
 
