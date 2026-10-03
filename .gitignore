@@ -11,3 +11,4 @@ __pycache__/
 # Day95 query practice data can be recreated from the SQL files.
 /day95/*.db
 /day95/*.db-journal
+.env.compose

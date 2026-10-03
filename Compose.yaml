@@ -1,0 +1,38 @@
+name: ticket-day141
+
+services:
+  db:
+    image: postgres:18
+    ports:
+      - "127.0.0.1:5433:5432"
+
+    environment:
+      POSTGRES_DB: ticket_app_compose
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DAY141_DB_PASSWORD:?Set DAY141_DB_PASSWORD first}
+    volumes:
+      - pgdata:/var/lib/postgresql
+      - ./ticket_app/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-h", "127.0.0.1", "-U", "postgres", "-d", "ticket_app_compose" ]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  api:
+    image: ticket-app:day140
+    environment:
+      TICKET_DB_HOST: db
+      TICKET_DB_PORT: "5432"
+      TICKET_DB_NAME: ticket_app_compose
+      TICKET_DB_USER: postgres
+      TICKET_DB_PASSWORD: ${DAY141_DB_PASSWORD:?Set DAY141_DB_PASSWOR first}
+    ports:
+      - "127.0.0.1:8002:8001"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
