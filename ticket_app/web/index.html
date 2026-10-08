@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>工单系统</title>
+</head>
+
+<body>
+    <label for="token-input">访问凭据:</label>
+    <input id="token-input" type="password" placeholder="请输入员工或管理员 token" autocomplete="off">
+
+
+    <!-- 工单数量和加载状态 -->
+    <p id="ticket-count">尚未加载工单...</p>
+
+    <!-- 工单操作区 -->
+    <button id="reload-button">
+        重新加载工单
+    </button>
+
+    <input id="ticket-input" placeholder="请输入工单标题">
+
+    <button id="add-button">
+        添加工单
+    </button>
+
+    <!-- 工单列表 -->
+    <p id="action-message" role="status"></p>
+    <ul id="ticket-list"></ul>
+
+    <!-- JavaScript 入口 -->
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>

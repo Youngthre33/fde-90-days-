@@ -25,7 +25,7 @@ const TICKET_ACTION = {
 // ---------- API 地址 ----------
 
 const TICKETS_API_URL =
-    "http://127.0.0.1:8001/tickets";
+    "/tickets";
 
 
 // ---------- 模块导出 ----------

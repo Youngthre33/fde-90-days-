@@ -32,6 +32,10 @@ import {
 
 let editingId = null;
 
+const tokenInput =
+    document.querySelector("#token-input");
+
+
 const ticketInput =
     document.querySelector("#ticket-input");
 
@@ -47,7 +51,17 @@ const reloadButton =
 const actionMessage =
     document.querySelector("#action-message");
 
+
+
+function getAuthHeaders() {
+    return {
+        Authorization: "Bearer " + tokenInput.value.trim()
+    };
+}
+
+
 // ---------- 创建工单 ----------
+
 
 async function handleAddTicket() {
     addButton.disabled = true;
@@ -67,7 +81,8 @@ async function handleAddTicket() {
                     method: "POST",
                     headers: {
                         "Content-Type":
-                            "application/json"
+                            "application/json",
+                        ...getAuthHeaders()
                     },
                     body:
                         JSON.stringify(
@@ -123,7 +138,8 @@ async function handleDeleteAction(
             await fetch(
                 `${TICKETS_API_URL}/${id}`,
                 {
-                    method: "DELETE"
+                    method: "DELETE",
+                    headers: getAuthHeaders()
                 }
             );
 
@@ -186,7 +202,8 @@ async function handleSaveAction(
                     method: "PATCH",
                     headers: {
                         "Content-Type":
-                            "application/json"
+                            "application/json",
+                        ...getAuthHeaders()
                     },
                     body:
                         JSON.stringify({
@@ -268,7 +285,8 @@ async function handleToggleStatusAction(
                     method: "PATCH",
                     headers: {
                         "Content-Type":
-                            "application/json"
+                            "application/json",
+                        ...getAuthHeaders()
                     },
                     body:
                         JSON.stringify({
@@ -376,12 +394,23 @@ async function handleTicketListClick(event) {
 // ---------- 从 API 加载工单 ----------
 
 async function loadTicketsFromApi() {
+    if (tokenInput.value.trim() === "") {
+        actionMessage.textContent =
+            "请先输入访问凭据, 再点击'重新加载工单',";
+        return;
+    }
+
+    actionMessage.textContent = "";
+
+
     try {
         reloadButton.disabled = true;
         renderLoading();
 
         const response =
-            await fetch(TICKETS_API_URL);
+            await fetch(TICKETS_API_URL, {
+                headers: getAuthHeaders()
+            });
 
         if (!response.ok) {
             throw new Error(

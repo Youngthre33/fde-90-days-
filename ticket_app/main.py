@@ -15,9 +15,10 @@ from ticket_app.ticket_service import (
     update_ticket_by_id,
 )
 
-from fastapi.middleware.cors import CORSMiddleware
 
 from ticket_app.auth import get_role, require_admin
+
+from fastapi.staticfiles import StaticFiles
 
 
 logger = logging.getLogger(__name__)
@@ -50,24 +51,13 @@ app = FastAPI(
     version="0.1.0",
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://127.0.0.1:5500",
-    ],
-    allow_methods=[
-        "GET",
-        "POST",
-        "PATCH",
-        "DELETE",
-    ],
-    allow_headers=[
-        "Content-Type",
-    ],
-    expose_headers=[
-        "X-Request-ID",
-    ],
+app.mount(
+    "/web",
+    StaticFiles(directory="ticket_app/web", html=True),
+    name="web",
 )
+
+
 
 
 

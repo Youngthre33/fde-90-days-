@@ -21,7 +21,7 @@ services:
       retries: 30
 
   api:
-    image: ticket-app:day143
+    image: ticket-app:day145
     environment:
       TICKET_DB_HOST: db
       TICKET_DB_PORT: "5432"
