@@ -21,7 +21,7 @@ jobs:
             postgres:
                 image: postgres:18
                 env:
-                    PSOTGRES_DB: ticket_app_test
+                    POSTGRES_DB: ticket_app_test
                     POSTGRES_USER: postgres
                     POSTGRES_PASSWORD: ci_test_password
                 ports:
