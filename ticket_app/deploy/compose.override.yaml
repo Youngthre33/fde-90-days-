@@ -1,0 +1,7 @@
+# Copy only to the Shanghai server's /home/ubuntu/ticket-app directory.
+# Compose discovers this override alongside the existing base Compose file.
+services:
+  api:
+    restart: unless-stopped
+  db:
+    restart: unless-stopped
