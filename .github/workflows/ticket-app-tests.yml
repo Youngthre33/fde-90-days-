@@ -9,6 +9,14 @@ jobs:
     runner-check:
         runs-on: ubuntu-24.04
 
+        env:
+            TICKET_DB_HOST: "127.0.0.1"
+            TICKET_DB_PORT: "5432"
+            TICKET_DB_NAME: "ticket_app_test"
+            TICKET_DB_USER: "postgres"
+            TICKET_DB_PASSWORD: "ci_test_password"
+
+
         services:
             postgres:
                 image: postgres:18
@@ -37,3 +45,9 @@ jobs:
 
             - name: Install dependencies
               run: python -m pip install -r ticket_app/requirements.txt
+
+            - name: Check database connection
+              run: python -m ticket_app.check_db_connection
+
+            - name: Run first database test
+              run: python -m pytest -q ticket_app/tests/test_day128_minimal.py
