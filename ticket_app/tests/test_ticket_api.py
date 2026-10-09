@@ -11,7 +11,9 @@ client = TestClient(app, headers={"Authorization": "Bearer test-admin-token"},)
 @pytest.fixture(autouse=True)
 def configure_test_tokens(monkeypatch):
     monkeypatch.setattr(settings, "staff_token", "test-staff-token")
-    monkeypatch.setattr(settings, "admin_token", "test-admin-token")
+ 
+
+@pytest.fixture(autouse=True)   
 def seeded_tickets(isolated_database):
     with isolated_database() as connection:
         with connection.cursor() as cursor:
