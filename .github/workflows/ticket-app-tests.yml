@@ -12,10 +12,14 @@ jobs:
             - name: Check out code
               uses: actions/checkout@v7
 
-            - name: Set up Pythion
+            - name: Set up Python
               uses: actions/setup-python@v7
               with:
                     python-version: "3.12"
 
             - name:  Show Python version
               run: python --version
+
+            - name: Install dependencies
+              run: python -m pip install -r
+ticket_app/requirements.txt
