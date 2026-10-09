@@ -17,5 +17,5 @@ jobs:
               with:
                     python-version: "3.12"
 
-            - name:  Shoe Python version
+            - name:  Show Python version
               run: python --version
