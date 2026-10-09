@@ -1,0 +1,13 @@
+name: Ticket app CI
+
+on: push
+
+permissions:
+        contents: read
+
+jobs:
+    runner-check:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Confirm runner
+              run: echo "GitHub runner is ready"
