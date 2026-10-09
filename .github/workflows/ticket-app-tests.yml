@@ -49,5 +49,5 @@ jobs:
             - name: Check database connection
               run: python -m ticket_app.check_db_connection
 
-            - name: Run first database test
-              run: python -m pytest -q ticket_app/tests/test_day128_minimal.py
+            - name: Run tests
+              run: python -m pytest -q ticket_app/tests
