@@ -7,7 +7,15 @@ permissions:
 
 jobs:
     runner-check:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         steps:
-            - name: Confirm runner
-              run: echo "GitHub runner is ready"
+            - name: Check out code
+              uses: actions/checkout@v7
+
+            - name: Set up Pythion
+              uses: actions/setup-python@v7
+              with:
+                    python-version: "3.12"
+
+            - name:  Shoe Python version
+              run: python --version
