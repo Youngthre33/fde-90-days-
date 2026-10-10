@@ -32,6 +32,8 @@ import {
 
 let editingId = null;
 
+let generatingAdvice = false;
+
 const tokenInput =
     document.querySelector("#token-input");
 
@@ -50,6 +52,9 @@ const reloadButton =
 
 const actionMessage =
     document.querySelector("#action-message");
+
+const adviceOutput =
+    document.querySelector("#advice-output");
 
 
 
@@ -331,6 +336,36 @@ async function handleToggleStatusAction(
 }
 
 
+async function handleAdviceAction(id, adviceButton) {
+    if (generatingAdvice) {
+        return;
+    }
+
+    generatingAdvice = true;
+    adviceButton.disabled = true;
+    adviceOutput.textContent = `正在为工单 #${id} 生成建议...`;
+
+    try {
+        const response = await fetch(`${TICKETS_API_URL}/${id}/advice`, {
+            method: "POST",
+            headers: getAuthHeaders()
+        });
+
+        if (!response.ok) {
+            throw new Error(`生成建议失败，HTTP状态码：${response.status}`);
+        }
+
+        const data = await response.json();
+        adviceOutput.textContent = `工单 #${data.ticket_id}\n\n${data.advice}`;
+    } catch (error) {
+        adviceOutput.textContent = error.message;
+    } finally {
+        generatingAdvice = false;
+        adviceButton.disabled = false;
+    }
+}
+
+
 // ---------- 列表点击事件分发 ----------
 
 async function handleTicketListClick(event) {
@@ -341,6 +376,11 @@ async function handleTicketListClick(event) {
     const clickedButton = event.target;
     const action = clickedButton.dataset.action;
     const id = Number(clickedButton.dataset.id);
+
+    if (action === TICKET_ACTION.GENERATE_ADVICE) {
+        await handleAdviceAction(id, clickedButton);
+        return;
+    }
 
     if (action === TICKET_ACTION.EDIT) {
         editingId = id;

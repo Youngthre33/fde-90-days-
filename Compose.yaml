@@ -21,7 +21,7 @@ services:
       retries: 30
 
   api:
-    image: ticket-app:day145
+    image: ticket-app:day152
     environment:
       TICKET_DB_HOST: db
       TICKET_DB_PORT: "5432"
@@ -30,6 +30,7 @@ services:
       TICKET_DB_PASSWORD: ${DAY141_DB_PASSWORD:?Set DAY141_DB_PASSWOR first}
       TICKET_STAFF_TOKEN: ${TICKET_STAFF_TOKEN:?Set TICKET_STAFF_TOKEN first}
       TICKET_ADMIN_TOKEN: ${TICKET_ADMIN_TOKEN:?Set TICKET_ADMIN_TOKEN first}
+      TICKET_AI_API_KEY: ${TICKET_AI_API_KEY:-}
 
     ports:
       - "127.0.0.1:8002:8001"

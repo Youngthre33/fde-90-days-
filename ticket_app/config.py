@@ -32,5 +32,6 @@ class Settings(BaseSettings):
     db_password: str = Field(default="", repr=False)
     staff_token: str = Field(default="", repr=False)
     admin_token: str = Field(default="", repr=False)
+    ai_api_key: str = Field(default="", repr=False)
 
 settings = Settings()

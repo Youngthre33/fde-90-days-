@@ -21,6 +21,9 @@ from ticket_app.auth import get_role, require_admin
 from fastapi.staticfiles import StaticFiles
 
 
+from ticket_app.ticket_ai import generate_ticket_advice
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -306,3 +309,27 @@ def get_ticket(
     )
 
     return ticket
+
+
+
+@app.post(
+    "/tickets/{ticket_id}/advice",
+    dependencies=[Depends(get_role)],
+)
+
+def create_ticket_advice(ticket_id: int = Path(ge=1)):
+    ticket = find_ticket_by_id(ticket_id)
+
+    if ticket is None:
+        raise HTTPException(status_code=404, detail="工单不存在")
+
+
+    ticket_text = (
+        f"标题：{ticket['title']}\n"
+        f"状态：{ticket['status']}"
+
+    )
+
+    advice = generate_ticket_advice(ticket_text)
+
+    return {"ticket_id": ticket_id, "advice": advice}

@@ -18,7 +18,8 @@ const TICKET_ACTION = {
     DELETE: "delete",
     SAVE: "save",
     CANCEL: "cancel",
-    TOGGLE_STATUS: "toggle-status"
+    TOGGLE_STATUS: "toggle-status",
+    GENERATE_ADVICE: "generate-advice"
 };
 
 
