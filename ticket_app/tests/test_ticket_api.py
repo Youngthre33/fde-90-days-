@@ -284,3 +284,34 @@ def test_delete_ticket_cascades_only_its_events(events_database):
             "LEFT JOIN tickets ON tickets.id = ticket_events.ticket_id "
             "WHERE tickets.id IS NULL"
         ).fetchall() == []
+
+
+def test_reject_request_without_token():
+    anonymous_client = TestClient(app)
+    response = anonymous_client.get("/tickets")
+    assert response.status_code == 401
+    assert response.headers["www-authenticate"] == "Bearer"
+
+def test_reject_invalid_token():
+    invalid_client = TestClient(
+        app,
+        headers={"Authorization": "Bearer wrong-test-token"},
+    )
+    response = invalid_client.get("/tickets")
+    assert response.status_code == 401
+    assert response.json() == {"detail": "访问凭据无效"}
+
+
+def test_staff_cannot_delete_ticket():
+    staff_client = TestClient(
+        app,
+        headers={"Authorization": "Bearer test-staff-token"},
+    )
+    before = staff_client.get("/tickets/101")
+    assert before.status_code == 200
+    response = staff_client.delete("/tickets/101")
+    assert response.status_code == 403
+    assert response.json() == {"detail": "需要管理员权限"}
+    after = staff_client.get("/tickets/101")
+    assert after.status_code == 200
+    assert after.json() == before.json()
