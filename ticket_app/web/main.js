@@ -356,7 +356,13 @@ async function handleAdviceAction(id, adviceButton) {
         }
 
         const data = await response.json();
-        adviceOutput.textContent = `工单 #${data.ticket_id}\n\n${data.advice}`;
+        const advice = data.advice;
+        adviceOutput.textContent =
+            `工单 #${data.ticket_id}\n\n` +
+            `【工单摘要】\n${advice.summary}\n\n` +
+            `【建议下一步】\n${advice.next_steps.join("\n")}\n\n` +
+            `【待补充信息】\n${advice.missing_info.join("\n")}`;
+
     } catch (error) {
         adviceOutput.textContent = error.message;
     } finally {

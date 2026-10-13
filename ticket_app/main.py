@@ -21,7 +21,10 @@ from ticket_app.auth import get_role, require_admin
 from fastapi.staticfiles import StaticFiles
 
 
-from ticket_app.ticket_ai import generate_ticket_advice
+from ticket_app.ticket_ai import (
+    generate_ticket_advice, 
+    parse_ticket_advice, 
+    )
 
 
 logger = logging.getLogger(__name__)
@@ -330,6 +333,6 @@ def create_ticket_advice(ticket_id: int = Path(ge=1)):
 
     )
 
-    advice = generate_ticket_advice(ticket_text)
-
+    content = generate_ticket_advice(ticket_text)
+    advice = parse_ticket_advice(content)
     return {"ticket_id": ticket_id, "advice": advice}
