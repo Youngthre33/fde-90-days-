@@ -20,14 +20,24 @@ from ticket_app.auth import get_role, require_admin
 
 from fastapi.staticfiles import StaticFiles
 
+from fastapi.responses import StreamingResponse
 
 from ticket_app.ticket_ai import (
-    generate_ticket_advice, 
-    parse_ticket_advice, 
-    )
+    parse_ticket_advice,
+    stream_ticket_advice,
+)
+
+import json
+from pydantic_core import from_json
+
+
 
 
 logger = logging.getLogger(__name__)
+
+# Day159：本后端进程暂存检查合格的完整建议；重启后清空。
+# 键是完整的工单输入文字，值是最终建议字典；不保存预览或错误。
+advice_cache = {}
 
 
 class TicketCreate(BaseModel):
@@ -315,24 +325,75 @@ def get_ticket(
 
 
 
+def stream_advice_events(ticket_text: str):
+    chunks = []
+
+    try:
+        # C1：当前权限和工单查询已由路由完成，再按完整输入找旧建议。
+        cached_advice = advice_cache.get(ticket_text)
+        if cached_advice is not None:
+            logger.info("AI建议缓存命中，复用完整建议；本次未调用模型")
+            message = {"type": "done", "data": cached_advice}
+            text = json.dumps(message, ensure_ascii=False)
+            line = text + "\n"
+            yield line
+            return
+
+        # C2：没有对应的完整建议，继续走原来的 AI 生成和预览流程。
+        logger.info("AI建议缓存未命中，开始生成")
+
+        for part in stream_ticket_advice(ticket_text):
+            chunks.append(part)
+            content = "".join(chunks)
+
+            try:
+                preview = from_json(content,allow_partial= "trailing-strings")
+
+            except ValueError:
+                continue
+
+            if not isinstance(preview, dict):
+                continue
+
+            message = {"type": "preview", "data": preview}
+            text = json.dumps(message, ensure_ascii=False)
+            line = text + "\n"
+            yield line
+
+        content = "".join(chunks)
+        advice = parse_ticket_advice(content)
+        message = {"type": "done", "data": advice}
+        text = json.dumps(message, ensure_ascii=False)
+        line = text + "\n"
+        # C3：完整内容检查、消息准备都成功后，保存供下次复用。
+        advice_cache[ticket_text] = advice
+        yield line ###这里就输出###
+
+    except Exception:
+        # B5：记录错误，交出失败消息
+        logger.exception("AI建议生成失败")
+        message = {"type": "error", "message": "AI建议生成失败，请重试"}
+        text = json.dumps(message, ensure_ascii=False)
+        line = text + "\n"
+        yield line
+
+
+
 @app.post(
-    "/tickets/{ticket_id}/advice",
+    "/tickets/{ticket_id}/advice/stream",
     dependencies=[Depends(get_role)],
 )
-
-def create_ticket_advice(ticket_id: int = Path(ge=1)):
+def create_ticket_advice_stream(ticket_id: int = Path(ge=1)):
     ticket = find_ticket_by_id(ticket_id)
-
     if ticket is None:
         raise HTTPException(status_code=404, detail="工单不存在")
-
 
     ticket_text = (
         f"标题：{ticket['title']}\n"
         f"状态：{ticket['status']}"
-
     )
 
-    content = generate_ticket_advice(ticket_text)
-    advice = parse_ticket_advice(content)
-    return {"ticket_id": ticket_id, "advice": advice}
+    return StreamingResponse(
+        stream_advice_events(ticket_text),
+        media_type="application/x-ndjson",
+    )
